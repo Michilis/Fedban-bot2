@@ -7,11 +7,6 @@ load_dotenv(
 )
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-API_ID = int(os.environ.get("API_ID"))
-SESSION_STRING = os.environ.get("SESSION_STRING", "")
-API_HASH = os.environ.get("API_HASH")
-USERBOT_PREFIX = os.environ.get("USERBOT_PREFIX", ".")
-PHONE_NUMBER = os.environ.get("PHONE_NUMBER")
 SUDO_USERS_ID = list(map(int, os.environ.get("SUDO_USERS_ID", "").split()))
 LOG_GROUP_ID = int(os.environ.get("LOG_GROUP_ID"))
 GBAN_LOG_GROUP_ID = int(os.environ.get("GBAN_LOG_GROUP_ID"))
