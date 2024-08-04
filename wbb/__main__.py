@@ -1,26 +1,8 @@
 """
 MIT License
-
-Copyright (c) 2024 TheHamkerCat
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+...
 """
+
 import asyncio
 import importlib
 import re
@@ -35,23 +17,18 @@ from wbb import (
     BOT_NAME,
     BOT_USERNAME,
     LOG_GROUP_ID,
-    USERBOT_NAME,
     aiohttpsession,
     app,
     log,
 )
 from wbb.core.keyboard import ikb
 from wbb.modules import ALL_MODULES
-from wbb.modules.sudoers import bot_sys_stats
-from wbb.utils import paginate_modules
-from wbb.utils.constants import MARKDOWN
 from wbb.utils.dbfunctions import clean_restart_stage, get_rules
 from wbb.utils.functions import extract_text_and_keyb
 
 loop = asyncio.get_event_loop()
 
 HELPABLE = {}
-
 
 async def start_bot():
     global HELPABLE
@@ -85,7 +62,6 @@ async def start_bot():
     print(bot_modules)
     print("+===============+===============+===============+===============+")
     log.info(f"BOT STARTED AS {BOT_NAME}!")
-    log.info(f"USERBOT STARTED AS {USERBOT_NAME}!")
 
     restart_data = await clean_restart_stage()
 
@@ -97,7 +73,6 @@ async def start_bot():
                 restart_data["message_id"],
                 "**Restarted Successfully**",
             )
-
         else:
             await app.send_message(LOG_GROUP_ID, "Bot started!")
     except Exception:
@@ -112,64 +87,6 @@ async def start_bot():
     for task in asyncio.all_tasks():
         task.cancel()
     log.info("Dead!")
-
-
-home_keyboard_pm = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(
-                text="Commands ❓", callback_data="bot_commands"
-            ),
-            InlineKeyboardButton(
-                text="Repo 🛠",
-                url="https://github.com/thehamkercat/WilliamButcherBot",
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text="System Stats 🖥",
-                callback_data="stats_callback",
-            ),
-            InlineKeyboardButton(
-                text="Support 👨", url="http://t.me/WBBSupport"
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text="Add Me To Your Group 🎉",
-                url=f"http://t.me/{BOT_USERNAME}?startgroup=new",
-            )
-        ],
-    ]
-)
-
-home_text_pm = (
-    f"Hey there! My name is {BOT_NAME}. I can manage your "
-    + "group with lots of useful features, feel free to "
-    + "add me to your group."
-)
-
-keyboard = InlineKeyboardMarkup(
-    [
-        [
-            InlineKeyboardButton(
-                text="Help ❓",
-                url=f"t.me/{BOT_USERNAME}?start=help",
-            ),
-            InlineKeyboardButton(
-                text="Repo 🛠",
-                url="https://github.com/thehamkercat/WilliamButcherBot",
-            ),
-        ],
-        [
-            InlineKeyboardButton(
-                text="System Stats 💻",
-                callback_data="stats_callback",
-            ),
-            InlineKeyboardButton(text="Support 👨", url="t.me/WBBSupport"),
-        ],
-    ]
-)
 
 
 FED_MARKUP = InlineKeyboardMarkup(
@@ -257,8 +174,37 @@ async def start(_, message):
             )
     else:
         await message.reply(
-            home_text_pm,
-            reply_markup=home_keyboard_pm,
+            "Hey there! My name is {BOT_NAME}. I can manage your group with lots of useful features, feel free to add me to your group.",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="Commands ❓",
+                            callback_data="bot_commands",
+                        ),
+                        InlineKeyboardButton(
+                            text="Repo 🛠",
+                            url="https://github.com/thehamkercat/WilliamButcherBot",
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text="System Stats 🖥",
+                            callback_data="stats_callback",
+                        ),
+                        InlineKeyboardButton(
+                            text="Support 👨",
+                            url="http://t.me/WBBSupport",
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text="Add Me To Your Group 🎉",
+                            url=f"http://t.me/{BOT_USERNAME}?startgroup=new",
+                        ),
+                    ],
+                ]
+            ),
         )
     return
 
